@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { UsApiService } from './service/us-api.service';
+
 
 @Component({
   selector: 'app-root',

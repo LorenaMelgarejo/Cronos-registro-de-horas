@@ -1,11 +1,11 @@
 <div>
-    <br>
-    <form class="formulario" method="POST">
-      <legend>
+    <br>  
+        <form class="formulario" method="POST"  (ngSubmit)="prueba()" [formGroup]="loginForm" >
+      <legend> 
         <img src="./assets/logo.jpg" alt="logo" class="img-logo">
       </legend>
-    <mat-form-field class="mat-form-field">
-    <input class="input"  matInput placeholder="Usuario" [formControl]="userFormControl">
+    <mat-form-field class="mat-form-field" >
+    <input class="input"  matInput placeholder="Usuario" [formControl]="userFormControl" formControlName="name">
     <mat-error *ngIf="userFormControl.hasError('required')">
       El usuario es requerido
     </mat-error>
@@ -16,12 +16,14 @@
   <!--Password-->
   <div class="password">
     <mat-form-field class="form-field">
-      <input class="inputpass" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña">
+      <input  class="inputpass" matInput [type]="hide ? 'password' : 'text'" placeholder="Ingrese contraseña" [formControl]="passFormControl" formControlName="pass">
       <button class="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
       <mat-icon class="icono">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
   </mat-form-field>
   </div>
-    <input class="BotonIngresar" type="button" value="Ingresar">
+    <input id ="boton-login" class="BotonLogin" type="submit" value="Login">
   </form>
+  
+  
   
