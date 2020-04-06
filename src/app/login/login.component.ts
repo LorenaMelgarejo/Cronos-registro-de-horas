@@ -4,6 +4,8 @@ import { UsApiService } from '../service/us-api.service';
 import { Key, Command } from 'protractor';
 import { Router } from '@angular/router';
 //import { stringify } from 'querystring';
+//nuevo
+import { UserInterface } from "../model/user-interface"; 
 
 
 
@@ -19,10 +21,16 @@ export class LoginComponent implements OnInit {
 
   hide = true;
 
+  //nuevo
+  private user: UserInterface={
+    name: '',
+    pass: ''
+  };
+  //
+
   loginForm: FormGroup;
 
-  private user = {name: '', pass: ''};
-
+  
 
   constructor(private usApiService: UsApiService, private fb:FormBuilder){    
   }
@@ -39,12 +47,22 @@ export class LoginComponent implements OnInit {
      this.loginForm=this.fb.group({
         name: this.userFormControl,
         pass: this.passFormControl
-     })
-
-     
+     })     
     }
       
-   
+   userLogin(){
+     return this.usApiService
+     .loginuser(this.user.name, this.user.pass)
+     .subscribe(
+       data => {
+         this.usApiService.setUser(data.user) 
+         let token = data.id;
+         this.usApiService.setToken(token)
+        // console.log(data)
+       },
+       error => console.log(error)
+     )
+   }
 
   //Muestra por consola los datos ingresados en el formulario
    prueba(){
