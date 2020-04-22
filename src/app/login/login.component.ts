@@ -3,12 +3,8 @@ import { FormControl, Validators, FormGroup,FormBuilder, ReactiveFormsModule} fr
 import { UsApiService } from '../service/us-api.service';
 import { Key, Command } from 'protractor';
 import { Router } from '@angular/router';
-//import { stringify } from 'querystring';
-//nuevo
 import { UserInterface } from "../model/user-interface"; 
-
-
-
+import { isError } from 'util';
 
 
 
@@ -21,60 +17,123 @@ export class LoginComponent implements OnInit {
 
   hide = true;
 
-  //nuevo
   private user: UserInterface={
-    name: '',
-    pass: ''
+    usuario: '',
+    clave: ''
   };
-  //
 
   loginForm: FormGroup;
 
-  
+   public isError = false;
 
-  constructor(private usApiService: UsApiService, private fb:FormBuilder){    
+
+  constructor(private usApiService: UsApiService, private fb:FormBuilder, private router: Router){    
   }
 
   usuarioLogueado = false;
+  
   ngOnInit(){
-      this.usApiService.getUsuarios().then(console.log);
-      this.onLogin();
-      
+      //this.usApiService.getUsuarios().then(console.log);
+     // this.onLogin();
+     this.userLogin();
+      //this.enviarLogin();
   }
-   
 
-   onLogin(){
-     this.loginForm=this.fb.group({
-        name: this.userFormControl,
-        pass: this.passFormControl
-     })     
-    }
+
+  // enviarLogin() {
+
+  //   let usuario = {  
       
-   userLogin(){
-     return this.usApiService
-     .loginuser(this.user.name, this.user.pass)
-     .subscribe(
-       data => {
-         this.usApiService.setUser(data.user) 
-         let token = data.id;
-         this.usApiService.setToken(token)
-        // console.log(data)
-       },
-       error => console.log(error)
-     )
-   }
+  //     'usuario': this.userFormControl,  //userFormControl.value,
+  //     'clave': this.passFormControl                    //passFormControl.value     
+  //   }
+  //   console.log(usuario);
+    
+  //    this.usApiService.login(usuario).then(res => {
+  //    this.router.navigate(['fichadasRRHH']);
+    
+  //  }).catch(err => {
+  
+  //      console.log("error capturado: " + err.error);
+  //   });
+
+  
+  // }
+   
+      
+  //  userLogin(){
+
+  //      this.loginForm = this.fb.group({
+  //      usuario: this.userFormControl,
+  //      clave: this.passFormControl,
+  // //     //log: this.logFormControl     
+  //      })
+  
+  //    if(this.loginForm.valid){
+  //    return this.usApiService
+  //    .loginuser(this.user.usuario, this.user.clave)
+  //    .subscribe(
+  //         data => {
+         
+  //          this.usApiService.setUser(data.user); 
+  //          //let token = data.id;
+  //          const token = data.id;
+  //          this.usApiService.setToken(token);
+  //          this.router.navigate(['/fichadaRRHH']);
+  //          location.reload();
+  //          this.isError = false;
+  //         // console.log(data)
+  //       },
+  //       error => this.onIsError()
+  //       );
+  //       //console.log(error)
+  //      } else {
+  //        this.onIsError();
+  //      }
+  //      //this.router.navigate(['fichadaRRHH'])
+  //     }
+      
+    
+  //    onIsError(): void {
+  //     this.isError = true;
+  //    setTimeout(() => {
+  //       this.isError = false;
+  //    }, 4000);
+
+  //  }
+
+  userLogin(){
+     
+    this.loginForm=this.fb.group({
+    usuario: this.userFormControl,
+    clave: this.passFormControl,
+    //log: this.logFormControl     
+    })
+
+   if(this.loginForm.valid){
+   return this.usApiService
+   .loginuser(this.user.usuario, this.user.clave)
+   .subscribe(data => {
+     this.usApiService.login(this.userLogin).then(res => {
+     this.router.navigate(['fichadasRRHH']);
+  
+     }).catch(err => {
+
+      console.log("error capturado: " + err.error);
+   });
+   });//cierra susc.
+
+  } //cierra if
+} //cierra login
+
 
   //Muestra por consola los datos ingresados en el formulario
    prueba(){
-    console.log('loginForm' , this.loginForm.value);
-    
-    
-    
-    //console.log('Saved',this.loginForm.value);//falla
-    //console.log('Saved',this.userFormControl.value,'Saved', this.passFormControl.value);//funca
+    console.log('loginForm' , this.loginForm.value);   
+    console.log('Saved',this.userFormControl.value,'Saved', this.passFormControl.value);//funciona
    }
 
-   
+   //valida los campos de name y pass
    userFormControl = new FormControl('', [
     Validators.required,
     Validators.email,    
@@ -82,11 +141,11 @@ export class LoginComponent implements OnInit {
 
    passFormControl = new FormControl('', [
    Validators.required,
-   Validators.minLength(3)
    ]);
 
+   fichadas(){ 
+    this.router.navigate(['fichadaRRHH'])
+   }
   
-  
- 
 }
 

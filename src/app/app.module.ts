@@ -19,8 +19,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { UsApiService } from './service/us-api.service';
 
 const routes: Routes = [
-  { path:'login', component: LoginComponent },
-  //{ path:'usuario', component: UsuarioComponent }
+  { path:'', component: LoginComponent },
+  { path:'fichadaRRHH', component: UsuarioComponent }
   
 
 ];
